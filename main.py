@@ -20,14 +20,10 @@ import fastq_dump
 import fastq_qc
 import pandas as pd
 import json
+import subprocess
 import DownstreamAnalysis
 import pdb
 
-# Save the current working directory
-import sys
-gen_tools_dir = "/captools/ewalsh/Retrogenix"  # Define the directory where GEN_Tools.py is located
-sys.path.insert(0, gen_tools_dir)
-import GEN_Tools
 
 class CommandLine:
     """ Handle the command line, usage and help requests """
