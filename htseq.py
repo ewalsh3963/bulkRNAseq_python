@@ -17,12 +17,9 @@ import subprocess
 import re
 import shutil
 import csv
+import OS_Tools
 
-# Save the current working directory
-import sys
-gen_tools_dir = "/captools/ewalsh/Retrogenix"  # Define the directory where GEN_Tools.py is located
-sys.path.insert(0, gen_tools_dir)
-import GEN_Tools
+
 
 
 def runHTSEQ(bam_file, gtf_file, outfile, stranded = "no", htseq_args = None):
@@ -42,7 +39,7 @@ def runHTSEQ(bam_file, gtf_file, outfile, stranded = "no", htseq_args = None):
         # Add BAM and GTF files
         cmd.extend([bam_file, gtf_file, ">", outfile])
 
-    GEN_Tools.ProcessCall.command_process_string(cmd, shell=True)
+    subprocess.run(cmd, shell=True)
 
 def main(args, run_logs):
     ## Get arguments from argparse
@@ -60,7 +57,7 @@ def main(args, run_logs):
 
     #########################################
     ## Initialize inputs and outputs
-    GEN_Tools.SearchDir.check_dir(outroot, critical = False)
+    OS_Tools.ensure_directory(outroot, critical = False)
     if indir is None:
         indir = os.path.join(root, 'results', study)
 
@@ -69,27 +66,27 @@ def main(args, run_logs):
     threads = []
     srr_ids = [name for name in os.listdir(indir) if os.path.isdir(os.path.join(indir, name))]
     for srr_id in srr_ids:
-        bam = GEN_Tools.SearchDir.get_files(parent_dir = os.path.join(indir, srr_id), extension = "*.bam", check=None, wd=os.getcwd(), recursive=True)
-        outdir = os.path.join(outroot, srr_id); GEN_Tools.SearchDir.check_dir(outdir, critical = False)
+        bam = OS_Tools.find_files(parent_dir = os.path.join(indir, srr_id), extension = "*.bam", check=None, wd=os.getcwd(), recursive=True)
+        outdir = os.path.join(outroot, srr_id); OS_Tools.ensure_directory(outdir, critical = False)
         outfile = os.path.join(outdir, "htseq_out.txt")
 
-        refDir = os.path.join(root, 'genomes', study); GEN_Tools.SearchDir.check_dir(refDir, critical = False)
+        refDir = os.path.join(root, 'genomes', study); OS_Tools.ensure_directory(refDir, critical = False)
         ## need a bed12 file to determine if RNAseq data is stranded or not 
         if gtf_file is None and bed_file is None:
             ## Get GTF file 
             tmp_gtf = "/scratch/tmp.gtf"
             try:
-                gtf_file = GEN_Tools.SearchDir.get_files(parent_dir = refDir, extension = "*.gtf.gz", check=None, wd=os.getcwd(), recursive=False)
+                gtf_file = OS_Tools.find_files(parent_dir = refDir, extension = "*.gtf.gz", check=None, wd=os.getcwd(), recursive=False)
 
                 ## Unzip it and store in scratch
                 cmd = ['gunzip',
                     '-c', ## keep original
                     gtf_file, ">", tmp_gtf]
-                GEN_Tools.ProcessCall.command_process_string(cmd, shell=True)
+                subprocess.run(cmd, shell=True)
             except FileNotFoundError:
-                gtf_file = GEN_Tools.SearchDir.get_files(parent_dir = refDir, extension = "*.gtf", check=None, wd=os.getcwd(), recursive=False)
+                gtf_file = OS_Tools.find_files(parent_dir = refDir, extension = "*.gtf", check=None, wd=os.getcwd(), recursive=False)
                 cmd = ['cp',gtf_file, tmp_gtf]
-                GEN_Tools.ProcessCall.command_process_string(cmd, shell=True)
+                subprocess.run(cmd, shell=True)
                 
             ## define bed file 
             bed_name = re.sub('.gtf.*','.bed',os.path.basename(gtf_file))
@@ -102,11 +99,11 @@ def main(args, run_logs):
             
             ## Run gtf2bed
             cmd = ["/usr/local/bin/gtf2bed", "<", tmp_gtf, ">", bed_file]
-            GEN_Tools.ProcessCall.command_process_string(cmd, shell=True)
+            subprocess.run(cmd, shell=True)
 
             ## Infer experiment 
             cmd = ["infer_experiment.py", "-r", bed_file, "-i", bam, "> /scratch/tmp.out"]
-            GEN_Tools.ProcessCall.command_process_string(cmd, shell=True)
+            subprocess.run(cmd, shell=True)
 
             with open("/scratch/tmp.out", "r") as file:
                 lines = [line.strip() for line in file if line.strip()]
@@ -127,11 +124,11 @@ def main(args, run_logs):
 
             ## Run gtf2bed
             cmd = ["/usr/local/bin/gtf2bed", "<", gtf_file, ">", bed_file]
-            GEN_Tools.ProcessCall.command_process_string(cmd, shell=True)
+            subprocess.run(cmd, shell=True)
 
             ## Infer experiment 
             cmd = ["infer_experiment.py", "-r", bed_file, "-i", bam, "> /scratch/tmp.out"]
-            GEN_Tools.ProcessCall.command_process_string(cmd, shell=True)
+            subprocess.run(cmd, shell=True)
             with open("/scratch/tmp.out", "r") as file:
                 lines = [line.strip() for line in file if line.strip()]
                 stranded_fraction = float(lines[3].split(':')[1])
@@ -142,7 +139,7 @@ def main(args, run_logs):
         else:
                 ## Infer experiment 
                 cmd = ["infer_experiment.py", "-r", bed_file, "-i", bam, "> /scratch/tmp.out"]
-                GEN_Tools.ProcessCall.command_process_string(cmd, shell=True)
+                subprocess.run(cmd, shell=True)
                 with open("/scratch/tmp.out", "r") as file:
                     lines = [line.strip() for line in file if line.strip()]
                     stranded_fraction = float(lines[3].split(':')[1])

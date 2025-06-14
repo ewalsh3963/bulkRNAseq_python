@@ -144,14 +144,14 @@ def main(args, run_logs):
     if indir is None:
         indir = os.path.join(root, 'PublicRNAseqData', study)
 
-    GEN_Tools.SearchDir.check_dir(outroot, critical = False)
-    outdir = os.path.join(outroot, 'Normalization'); GEN_Tools.SearchDir.check_dir(outdir, critical = False)
+    OS_Tools.ensure_directory(outroot, critical = False)
+    outdir = os.path.join(outroot, 'Normalization'); OS_Tools.ensure_directory(outdir, critical = False)
 
     #########################################
     ## Load, Inspect, and Prepare Data
 
     ## Join the htseq outputs
-    htseq_files = GEN_Tools.SearchDir.get_files(parent_dir = indir, 
+    htseq_files = OS_Tools.find_files(parent_dir = indir, 
                                         extension = "htseq_out.txt", 
                                         check=None, 
                                         wd=os.getcwd(), 
@@ -172,12 +172,12 @@ def main(args, run_logs):
     count_matrix = count_matrix.set_index('feature')
 
     if gtf_file is None:
-        refDir = os.path.join(root, 'genomes', study); GEN_Tools.SearchDir.check_dir(refDir, critical = False)
+        refDir = os.path.join(root, 'genomes', study); OS_Tools.ensure_directory(refDir, critical = False)
         try:
-            gtf_file = GEN_Tools.SearchDir.get_files(parent_dir = refDir, extension = "*.gtf.gz", check=None, wd=os.getcwd(), recursive=False)
+            gtf_file = OS_Tools.find_files(parent_dir = refDir, extension = "*.gtf.gz", check=None, wd=os.getcwd(), recursive=False)
         except FileNotFoundError:
             try:
-                gtf_file = GEN_Tools.SearchDir.get_files(parent_dir = refDir, extension = "*.gtf", check=None, wd=os.getcwd(), recursive=False)
+                gtf_file = OS_Tools.find_files(parent_dir = refDir, extension = "*.gtf", check=None, wd=os.getcwd(), recursive=False)
             except:
                 sys.exit("No GTF found or specified only calcuting CPM normalization...")
                 format = "cpm"

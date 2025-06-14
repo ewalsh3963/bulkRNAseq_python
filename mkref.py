@@ -42,23 +42,23 @@ class refController:
         if self.ref_fasta is None:
             ftp_path = os.path.join(ftp_root, 'current_fasta', self.species.lower(), 'dna/')            
             command = ["wget -r -nd -q -np -A *.dna.primary_assembly.fa.gz -R index.html*,*_from_genomic.fna.gz -e robots=off -P", os.path.join(targetDir, 'fasta'), ftp_path]
-            GEN_Tools.ProcessCall.command_process_string(command)
+            subprocess.run(command)
         else:
             fasta_dir = os.path.join(targetDir, 'fasta')
-            GEN_Tools.SearchDir.check_dir(fasta_dir, critical=False)
+            OS_Tools.ensure_directory(fasta_dir, critical=False)
             command = ['cp', self.ref_fasta, fasta_dir]
-            GEN_Tools.ProcessCall.command_process_string(command)
+            subprocess.run(command)
 
         if self.ref_gtf is None:
             # ftp_path = os.path.join(ftp_root, 'genomes', 'refseq', 'vertebrate_mammalian', self.species, 'latest_assembly_versions/')
             ftp_path = os.path.join(ftp_root, 'current_gtf', self.species.lower() + '/')
             command = ["wget -r -nd -q -np -A *.gtf.gz -R index.html*,*chr.gtf.gz,*abinitio.gtf.gz,*scaff.gtf.gz  -e robots=off -P", os.path.join(targetDir, 'gtf'), ftp_path]
-            GEN_Tools.ProcessCall.command_process_string(command)
+            subprocess.run(command)
         else:
             gtf_dir = os.path.join(targetDir, 'gtf')
-            GEN_Tools.SearchDir.check_dir(gtf_dir, critical=False)
+            OS_Tools.ensure_directory(gtf_dir, critical=False)
             command = ['cp', self.ref_gtf, gtf_dir]
-            GEN_Tools.ProcessCall.command_process_string(command)
+            subprocess.run(command)
 
     def run_STAR_mkref(self, output_loc, fastaFile, gtfFile, star_args):
         ## delete the genome_dir if it exists
@@ -70,7 +70,7 @@ class refController:
         if os.path.exists(star_tmp_dir):
             GEN_Tools.SearchDir.remove_dir(star_tmp_dir)
 
-        GEN_Tools.SearchDir.check_dir(genome_dir, critical = False)
+        OS_Tools.ensure_directory(genome_dir, critical = False)
 
         cmd = ["/usr/bin/STAR", "--runMode", "genomeGenerate", "--genomeDir", genome_dir,
                "--genomeFastaFiles", fastaFile, 
@@ -84,7 +84,7 @@ class refController:
                 cmd.extend([str(key), str(value)])
         except AttributeError:
             pass
-        GEN_Tools.ProcessCall.command_process_string(cmd, shell=True, wd=output_loc)
+        subprocess.run(cmd, shell=True, wd=output_loc)
 
 def main(args, run_logs):
     ## Get arguments from argparse
@@ -95,7 +95,7 @@ def main(args, run_logs):
     breaker = "=" * 120
 
     # outdir = os.path.join(outroot, study)
-    GEN_Tools.SearchDir.check_dir(outroot, critical = False)
+    OS_Tools.ensure_directory(outroot, critical = False)
 
     ## create directory to store the reference genome files 
     my_controller = refController(species, outroot, study, ref_fasta, ref_gtf) ## initialize fastq controller
@@ -108,11 +108,11 @@ def main(args, run_logs):
     except IndexError:
         searchDir = os.path.join(outroot, args.species, 'fasta', '*.fna.gz');
     refFasta = glob.glob(searchDir)[0]
-    cmd = ['gunzip', refFasta]; GEN_Tools.ProcessCall.command_process_string(cmd, shell=True)
+    cmd = ['gunzip', refFasta]; subprocess.run(cmd, shell=True)
     refFasta = re.sub('.gz','',refFasta)
     searchDir = os.path.join(outroot, args.species, 'gtf', '*.gtf.gz'); 
     refGTF = glob.glob(searchDir)[0]
-    cmd = ['gunzip', refGTF]; GEN_Tools.ProcessCall.command_process_string(cmd, shell=True)
+    cmd = ['gunzip', refGTF]; subprocess.run(cmd, shell=True)
     refGTF = re.sub('.gz','',refGTF)
     
     #########################################

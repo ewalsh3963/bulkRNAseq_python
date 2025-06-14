@@ -227,7 +227,7 @@ def main(command=None):
 
     ## check if outroot exists 
     my_command.args.o = os.path.abspath(my_command.args.o)
-    GEN_Tools.SearchDir.check_dir(my_command.args.o, critical=False) 
+    OS_Tools.ensure_directory(my_command.args.o, critical=False) 
     outroot = my_command.args.o
 
     # Handle top-level options
@@ -298,7 +298,7 @@ def main(command=None):
 
         ########### clean up output directory ###########
         cmd = ['rm', '-rf', "*_sra"]
-        GEN_Tools.ProcessCall.command_process_string(cmd, shell=True, wd=outdir)
+        subprocess.run(cmd, shell=True, wd=outdir)
 
         ########### send to s3 ###########
         ## send fastq files to "expdata" folder in s3

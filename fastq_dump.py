@@ -40,46 +40,46 @@ class Download:
         cmd = ["prefetch", "--max-size 100G", '-O', data_loc, srr_id]
         my_logs.append_logs("Prefetch command:\n")
         my_logs.append_logs(cmd)
-        GEN_Tools.ProcessCall.command_process_string(cmd)
+        subprocess.run(cmd)
         
         ## move the SRR ID folder 
         outdir = os.path.join(data_loc, srr_id)
         sra_dir = outdir + '_sra'
         cmd = ['mv', outdir, sra_dir]
-        GEN_Tools.ProcessCall.command_process_string(cmd)
+        subprocess.run(cmd)
 
         ## run fastq -dump
         sra_file = os.path.join(sra_dir, srr_id + '.sra')
         cmd = ["fastq_dump", "-t", "/ds-workspace/EW-TempDataStore/tmp", " --include-technical", '-O', outdir, '--split-files', sra_file]
         my_logs.append_logs("Fastq-dump command:\n")
         my_logs.append_logs(cmd)
-        GEN_Tools.ProcessCall.command_process_string(cmd)
+        subprocess.run(cmd)
 
         ## Zip fastq files
         cmd = ['gzip', os.path.join(outdir, '*.fastq')]
-        GEN_Tools.ProcessCall.command_process_string(cmd, shell=True, wd=outdir)
+        subprocess.run(cmd, shell=True, wd=outdir)
 
     def fastq_dump(self, srr_id, data_loc, my_logs, N=None, X=None):
         ## Make SRR ID Directory
-        outdir = os.path.join(data_loc, srr_id); GEN_Tools.SearchDir.check_dir(outdir, critical = False)
+        outdir = os.path.join(data_loc, srr_id); OS_Tools.ensure_directory(outdir, critical = False)
         cmd = ["fastq-dump", "-N", N, "-X", X, '-O', outdir, '--split-files', srr_id]
         my_logs.append_logs("Fastq-dump command:\n")
         my_logs.append_logs(cmd)
-        GEN_Tools.ProcessCall.command_process_string(cmd)
+        subprocess.run(cmd)
 
         ## Zip fastq files
         cmd = ['gzip', os.path.join(outdir, '*.fastq')]
-        GEN_Tools.ProcessCall.command_process_string(cmd, shell=True, wd=outdir)
+        subprocess.run(cmd, shell=True, wd=outdir)
 
     def sra_toolkit(self, data_loc='/captools/ewalsh/BINF_Tools'):
         ## download the sra-toolkit
         outfile = os.path.join(data_loc, "sratoolkit.tar.gz")
         cmd = ["wget", "-O", outfile, "https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz"]
-        GEN_Tools.ProcessCall.command_process_string(cmd)
+        subprocess.run(cmd)
 
         ## untar the zipped folder 
         cmd = ["tar", "-vxzf",  data_loc + '/' + "sratoolkit.tar.gz", "-C", data_loc]
-        GEN_Tools.ProcessCall.command_process_string(cmd)
+        subprocess.run(cmd)
 
         ## Add to path
         toolkit_path = os.path.abspath(data_loc + '/' + "sratoolkit.3.0.7-ubuntu64/bin")
@@ -91,7 +91,7 @@ def main(args, run_logs):
     """ Run specified program(s). """
     ## command line args 
     outroot, study, srr_file, N, X = args.o, args.s, args.srr, args.N, args.X
-    outdir = os.path.join(outroot, 'fastq_dump'); GEN_Tools.SearchDir.check_dir(outdir, critical = False)
+    outdir = os.path.join(outroot, 'fastq_dump'); OS_Tools.ensure_directory(outdir, critical = False)
     ## initialize Log tools and directories
     my_logs = GEN_Tools.Logs(run_logs)
     breaker = "=" * 120

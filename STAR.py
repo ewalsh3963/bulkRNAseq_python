@@ -45,7 +45,7 @@ def runSTAR(fq, output_dir, genome_dir, star_args):
     except AttributeError:
         pass
         
-    GEN_Tools.ProcessCall.command_process_string(cmd, shell=True, wd=output_dir)
+    subprocess.run(cmd, shell=True, wd=output_dir)
 
 def runSTAR_PE(fqs, output_dir, genome_dir, star_args):
     fqs = sorted(fqs)
@@ -65,7 +65,7 @@ def runSTAR_PE(fqs, output_dir, genome_dir, star_args):
     except AttributeError:
         pass
         
-    GEN_Tools.ProcessCall.command_process_string(cmd, shell=True, wd=output_dir)
+    subprocess.run(cmd, shell=True, wd=output_dir)
 
 def thread_wrapper(thread_limit, func, args):
     with thread_limit:
@@ -89,7 +89,7 @@ def main(args, run_logs):
             refDir = os.path.join(root, 'genomes', study)
             my_logs.append_logs("Reference directory for alignment:\n{}".format(refDir))
             cmd = ['aws', 's3', 'sync', args.r, refDir, '--no-progress']
-            t = Thread(target=GEN_Tools.ProcessCall.command_process_string, args=[cmd], daemon=True) # daemon means that all threads will exit when the main thread exits
+            t = Thread(target=subprocess.run, args=[cmd], daemon=True) # daemon means that all threads will exit when the main thread exits
             t.start()
             t.join()
 
@@ -111,7 +111,7 @@ def main(args, run_logs):
 
     #########################################
     ## Initialize inputs and outputs
-    GEN_Tools.SearchDir.check_dir(outroot, critical = False)
+    OS_Tools.ensure_directory(outroot, critical = False)
     if indir is None:
         indir = os.path.join(root, 'expdata', study, "fastq_trimmed")
     
@@ -121,7 +121,7 @@ def main(args, run_logs):
     threads = []
     srr_ids = [name for name in os.listdir(indir) if os.path.isdir(os.path.join(indir, name))]
     for srr_id in srr_ids:
-        fqs = GEN_Tools.SearchDir.get_files(
+        fqs = OS_Tools.find_files(
             parent_dir=os.path.join(indir, srr_id),
             extension="*.fastq.gz",
             check=None,
@@ -129,7 +129,7 @@ def main(args, run_logs):
             recursive=True
         )
         outdir = os.path.join(outroot, srr_id)
-        GEN_Tools.SearchDir.check_dir(outdir, critical=False)
+        OS_Tools.ensure_directory(outdir, critical=False)
         if len(fqs) > 1 and isinstance(fqs, list):
             fqs = sorted(fqs)
             t = Thread(target=thread_wrapper, args=(thread_limit, runSTAR_PE, [fqs, outdir, genome_dir, args.star_args]), daemon=True)
@@ -146,9 +146,9 @@ def main(args, run_logs):
     ## Index Bam Files after alignment
     for srr_id in srr_ids:
         outdir = os.path.join(outroot, srr_id);
-        bam_file = GEN_Tools.SearchDir.get_files(parent_dir = outdir, extension = "*.bam", check=None, wd=os.getcwd())
+        bam_file = OS_Tools.find_files(parent_dir = outdir, extension = "*.bam", check=None, wd=os.getcwd())
         cmd = ["samtools", "index", bam_file]
-        GEN_Tools.ProcessCall.command_process_string(cmd, shell=True, wd=outdir)
+        subprocess.run(cmd, shell=True, wd=outdir)
 
 
 

@@ -45,14 +45,14 @@ def main(args, run_logs):
     if indir is None:
         indir = os.path.join(root, 'PublicRNAseqData', study)
 
-    GEN_Tools.SearchDir.check_dir(outroot, critical = False)
-    outdir = os.path.join(outroot, 'DownstreamAnalysis'); GEN_Tools.SearchDir.check_dir(outdir, critical = False)
+    OS_Tools.ensure_directory(outroot, critical = False)
+    outdir = os.path.join(outroot, 'DownstreamAnalysis'); OS_Tools.ensure_directory(outdir, critical = False)
 
     #########################################
     ## Load, Inspect, and Prepare Data
 
     ## Join the htseq outputs
-    htseq_files = GEN_Tools.SearchDir.get_files(parent_dir = indir, 
+    htseq_files = OS_Tools.find_files(parent_dir = indir, 
                                         extension = "htseq_out.txt", 
                                         check=None, 
                                         wd=os.getcwd(), 
