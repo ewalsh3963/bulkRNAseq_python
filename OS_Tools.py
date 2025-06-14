@@ -68,3 +68,48 @@ def find_files(parent_dir, extension, wd=None, recursive=False):
             print(f"Changed back to original working directory: {os.getcwd()}")
 
     return found_files
+
+def check_file(file, critical=False, rewrite=True):
+    """
+    Checks if a file exists and initializes it if rewrite is True or it doesn't exist.
+
+    Parameters:
+    - file (str): Path to the file.
+    - critical (bool): If True, raises an error if the file does not exist.
+    - rewrite (bool): If True and file exists, overwrite allowed (file will be truncated).
+                      If False and file exists, do not rewrite.
+
+    Returns:
+    - bool: True if file is ready (exists or created),
+            False if file exists and rewrite is False.
+    """
+    file_exists = os.path.exists(file)
+    
+    if file_exists:
+        if rewrite:
+            # Initialize (truncate) the existing file
+            with open(file, 'w'):
+                pass
+            return True
+        else:
+            # File exists and rewrite not allowed
+            return False
+    else:
+        if critical:
+            raise FileNotFoundError(f"Critical: file '{file}' does not exist.")
+        # Create (initialize) the file
+        with open(file, 'w'):
+            pass
+        return True
+
+## Writing log files 
+class Logs:
+    def __init__(self, log_file):
+        self.log_file = log_file
+
+    def append_logs(self, text):
+        """Append the given text to the log file, adding a newline if needed."""
+        with open(self.log_file, 'a', encoding='utf-8') as f:
+            if not text.endswith('\n'):
+                text += '\n'
+            f.write(text)

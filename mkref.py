@@ -91,7 +91,7 @@ def main(args, run_logs):
     outroot, study, species, ref_fasta, ref_gtf = args.o, args.s, args.species, args.rf, args.rg
     
     ## initialize Log tools and directories
-    my_logs = GEN_Tools.Logs(run_logs)
+    my_logs = OS_Tools.Logs(run_logs)
     breaker = "=" * 120
 
     # outdir = os.path.join(outroot, study)

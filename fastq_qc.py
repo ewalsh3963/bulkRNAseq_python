@@ -29,7 +29,7 @@ def main(args, run_logs):
     indir, root, outroot, study = args.i, args.root, args.o, args.s
 
     ## initialize Log tools and directories
-    my_logs = GEN_Tools.Logs(run_logs)
+    my_logs = OS_Tools.Logs(run_logs)
     breaker = "=" * 120
     my_logs.append_logs(breaker)
     my_logs.append_logs("Initializing fastq QC script")
