@@ -43,9 +43,12 @@ Install external command line tools reuqired for pipeline (assumes Ubuntu system
 cd bulkRNAseq_python
 chmod +x ExternalTools.sh
 ./ExternalTools.sh
+
+## Add Variables to PATH
+TOOLS_DIR="$HOME/rnaseq_tools"
+SRATOOLKIT_DIR=$(find $TOOLS_DIR -maxdepth 1 -type d -name "sratoolkit*" | head -n 1)
+export PATH="$SRATOOLKIT_DIR/bin:$TOOLS_DIR/FastQC:$TOOLS_DIR:$TOOLS_DIR/STAR-2.7.10a/bin/Linux_x86_64_static:$PATH"
 ```
-
-
 
 ## Usage
 Run individual pipeline steps as needed. Example commands:
