@@ -32,6 +32,13 @@ pip install -r requirements.txt
 ```
 
 Install external command line tools reuqired for pipeline (assumes Ubuntu system)
+
+-fastq_dump (sratoolkit)
+- fastqc
+- fastp
+- STAR
+- htseq-count
+
 ```
 cd bulkRNAseq_python
 chmod +x ExternalTools.sh
