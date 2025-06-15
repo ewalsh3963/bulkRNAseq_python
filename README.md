@@ -43,7 +43,6 @@ Install external command line tools reuqired for pipeline (assumes Ubuntu system
 cd bulkRNAseq_python
 chmod +x ExternalTools.sh
 ./ExternalTools.sh
-
 ```
 
 
