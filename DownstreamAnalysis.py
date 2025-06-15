@@ -2,7 +2,7 @@
 # Last Update: 
 # Capsida Biotherapeutics
 # Data Science 
-# Evan Walsh (evan.walsh@capsida.com)
+# Evan Walsh (evanwalsh396@gmail.com)
 
 import os
 import sys
@@ -13,11 +13,7 @@ import scipy
 from mygene import MyGeneInfo
 from threading import Thread
 from matplotlib import pyplot as plt
-import pdb
 import scanpy as sc
-import subprocess
-import re
-import shutil
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from scipy.cluster.hierarchy import linkage, dendrogram
@@ -28,12 +24,8 @@ from pydeseq2.dds import DeseqDataSet  # correct for version >= 0.4.0
 from pydeseq2.ds import DeseqStats
 import gseapy as gp
 from gseapy.plot import gseaplot
-
-# Save the current working directory
 import sys
-gen_tools_dir = "/captools/ewalsh/Retrogenix"  # Define the directory where GEN_Tools.py is located
-sys.path.insert(0, gen_tools_dir)
-import GEN_Tools
+
 
 
 def main(args, run_logs):

@@ -2,7 +2,7 @@
 # Capsida Biotherapeutics
 # Download fastq files from Gene Expression Omnibus and perform RNA-seq analysis
 # QBDS
-# Evan Walsh (evan.walsh@capsida.com)
+# Evan Walsh (evanwalsh396@gmail.com)
 
 import argparse
 import logging
@@ -39,7 +39,7 @@ class CommandLine:
         usage='python3 %(prog)s [-h] [-v] [fullAlign, fastqDump, mkref, STAR, htseq, Normalzie, DownstreamAnalysis] ...')
      
         ## version 
-        self.parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0 - Capsida Biotherapeutics - Evan Walsh (evan.walsh@capsida.com)')
+        self.parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0 - Capsida Biotherapeutics - Evan Walsh (evanwalsh396@gmail.com)')
 
         subparsers = self.parser.add_subparsers(title="programs", 
                                                 dest="program",
@@ -100,7 +100,7 @@ class CommandLine:
                 
     def fullAlign_args(self):
         self.fullAlign_parse.add_argument('-s', metavar='--study', action='store', type=str, required=True, help='Study title')
-        self.fullAlign_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/ds-workspace/EW-TempDataStore')
+        self.fullAlign_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/home/ewalsh/scratch')
 
         ## fastqDump parameters
         self.fullAlign_parse.add_argument('-srr', metavar='--srr_run_table', action='store', help='SRR Run table file with SRR IDs to use for download (full path)', required=False, type=str)
@@ -117,7 +117,7 @@ class CommandLine:
 
     def fastqDump_args(self):
         self.fastqDump_parse.add_argument('-s', metavar='--study', action='store', type=str, required=True, help='Study title')
-        self.fastqDump_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/ds-workspace/EW-TempDataStore')
+        self.fastqDump_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/home/ewalsh/scratch')
         self.fastqDump_parse.add_argument('-srr', metavar='--srr_run_table', action='store', help='SRR Run table file with SRR IDs to use for download (full path)', required=True, type=str)
 
         ## Downsample parameters 
@@ -126,12 +126,12 @@ class CommandLine:
 
     def fastqQC_args(self):
         self.fastqQC_parse.add_argument('-s', metavar='--study', action='store', type=str, required=True, help='Study title')
-        self.fastqQC_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/ds-workspace/EW-TempDataStore')
+        self.fastqQC_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/home/ewalsh/scratch')
         self.fastqQC_parse.add_argument('-i', metavar='--input_dir', action='store', help='output file path', required=False, type=str, default=None)
   
     def mkref_args(self):
         self.mkref_parse.add_argument('-s', metavar='--study', action='store', type=str, required=True, help='Study title')
-        self.mkref_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/ds-workspace/EW-TempDataStore')
+        self.mkref_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/home/ewalsh/scratch')
         self.mkref_parse.add_argument('-species', metavar='--species', action='store', required=False, type=str, help='Species of samples [default: None]', default=None)
         
         self.mkref_parse.add_argument("-star_args", type=json.loads, default={}, help="JSON string of additional htseq-count arguments")
@@ -147,12 +147,12 @@ class CommandLine:
         
         self.STAR_parse.add_argument("-star_args", type=json.loads, default={}, help="JSON string of additional htseq-count arguments")
 
-        self.STAR_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/ds-workspace/EW-TempDataStore')
+        self.STAR_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/home/ewalsh/scratch')
         self.STAR_parse.add_argument('-i', metavar='--input_dir', action='store', help='output file path', required=False, type=str, default=None)
 
     def htseq_args(self):
         self.htseq_parse.add_argument('-s', metavar='--study', action='store', type=str, required=True, help='Study title')
-        self.htseq_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/ds-workspace/EW-TempDataStore')
+        self.htseq_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/home/ewalsh/scratch')
         self.htseq_parse.add_argument('-i', metavar='--input_dir', action='store', help='output file path', required=False, type=str, default=None)
         
         self.htseq_parse.add_argument("-htseq_args", type=json.loads, default={}, help="JSON string of additional htseq-count arguments")
@@ -161,7 +161,7 @@ class CommandLine:
 
     def DownstreamAnalysis_args(self):
         self.DownstreamAnalysis_parse.add_argument('-s', metavar='--study', action='store', type=str, required=True, help='Study title')
-        self.DownstreamAnalysis_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/ds-workspace/EW-TempDataStore')
+        self.DownstreamAnalysis_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/home/ewalsh/scratch')
         self.DownstreamAnalysis_parse.add_argument('-i', metavar='--input_dir', action='store', help='input file path', required=False, type=str, default=None)
         
         ## Filtering and curating data
@@ -178,7 +178,7 @@ class CommandLine:
 
     def Normalize_args(self):
         self.Normalize_parse.add_argument('-s', metavar='--study', action='store', type=str, required=True, help='Study title')
-        self.Normalize_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/ds-workspace/EW-TempDataStore')
+        self.Normalize_parse.add_argument('-o', metavar='--output_dir', action='store', help='output file path', required=False, type=str, default='/home/ewalsh/scratch')
         self.Normalize_parse.add_argument('-i', metavar='--input_dir', action='store', help='input file path', required=False, type=str, default=None)
         
         ## Normalization parameters
@@ -269,7 +269,7 @@ def main(command=None):
 
     elif my_command.args.program == "fastqDump":
         """ Download fastq files from GEO with fastq dump from SRA Toolkit."""
-        outdir = os.path.join(outroot, 'expdata', my_command.args.s)
+        outdir = os.path.join(outroot, 'expdata', my_command.args.s); OS_Tools.ensure_directory(outdir, critical=False) 
         init_log = LogInitializer("fastqDump", outdir)
         run_logs = init_log.logger_check()
         ## add command and paramters to 
@@ -291,7 +291,7 @@ def main(command=None):
 
     elif my_command.args.program == "fastqQC":
         """ Generate a STAR reference for alignment of fastq files."""
-        outdir = os.path.join(outroot, 'expdata', my_command.args.s)
+        outdir = os.path.join(outroot, 'expdata', my_command.args.s); OS_Tools.ensure_directory(outdir, critical=False) 
         init_log = LogInitializer("fastqQC", outdir)
         run_logs = init_log.logger_check()
 
@@ -312,7 +312,7 @@ def main(command=None):
 
         ###################################################################################################
         ## 1) Make a STAR refrence for cellranger
-        outdir = os.path.join(outroot, 'genomes', my_command.args.s)
+        outdir = os.path.join(outroot, 'genomes', my_command.args.s); OS_Tools.ensure_directory(outdir, critical=False) 
         init_log = LogInitializer("mkref", outdir)
         run_logs = init_log.logger_check()
         ## add command and paramters to 
@@ -331,7 +331,7 @@ def main(command=None):
 
         ###################################################################################################
         ## 1) Make a STAR refrence for cellranger
-        outdir = os.path.join(outroot, 'results', my_command.args.s)
+        outdir = os.path.join(outroot, 'results', my_command.args.s); OS_Tools.ensure_directory(my_command.args.o, critical=False) 
         init_log = LogInitializer("align", outdir)
         run_logs = init_log.logger_check()
 
@@ -351,7 +351,7 @@ def main(command=None):
 
         ###################################################################################################
         ## 1) Make a STAR refrence for cellranger
-        outdir = os.path.join(outroot, 'PublicRNAseqData', my_command.args.s)
+        outdir = os.path.join(outroot, 'PublicRNAseqData', my_command.args.s); OS_Tools.ensure_directory(outdir, critical=False) 
         init_log = LogInitializer("htseq", outdir)
         run_logs = init_log.logger_check()
         ## add command and paramters to 
@@ -371,7 +371,7 @@ def main(command=None):
 
         ###################################################################################################
         ## 1) Make a STAR refrence for cellranger
-        outdir = os.path.join(outroot, 'PublicRNAseqData', my_command.args.s)
+        outdir = os.path.join(outroot, 'PublicRNAseqData', my_command.args.s); OS_Tools.ensure_directory(outdir, critical=False) 
         init_log = LogInitializer("DownstreamAnalysis", outdir)
         run_logs = init_log.logger_check()
         ## add command and paramters to 
@@ -390,7 +390,7 @@ def main(command=None):
 
         ###################################################################################################
         ## 1) Make a STAR refrence for cellranger
-        outdir = os.path.join(outroot, 'PublicRNAseqData', my_command.args.s)
+        outdir = os.path.join(outroot, 'PublicRNAseqData', my_command.args.s); OS_Tools.ensure_directory(outdir, critical=False) 
         init_log = LogInitializer("htseq", outdir)
         run_logs = init_log.logger_check()
         ## add command and paramters to 
@@ -415,27 +415,25 @@ if __name__ == "__main__":
 ###########################################################################
 ## CHO-1 GSE138292
 
-# python3 /captools/ewalsh/Retrogenix/FastqProcess/main.py fastqDump -s CHO_1_GSE138292 \
-# -srr /captools/ewalsh/Retrogenix/FastqProcess/RunFiles/CHO_1_GSE138292/SraRunTable.csv 
+# python3 /home/ewalsh/FastqProcess/main.py fastqDump -s CHO_1_GSE138292 \
+# -srr /home/ewalsh/FastqProcess/RunFiles/CHO_1_GSE138292/SraRunTable.csv 
 
-# python3 /captools/ewalsh/Retrogenix/FastqProcess/main.py fastqDump -s CHO_1_GSE138292 \
-# -srr /captools/ewalsh/Retrogenix/FastqProcess/RunFiles/CHO_1_GSE138292/SraRunTable.csv  -N 1 -X 750000
+# python3 /home/ewalsh/FastqProcess/main.py fastqDump -s CHO_1_GSE138292 \
+# -srr /home/ewalsh/FastqProcess/RunFiles/CHO_1_GSE138292/SraRunTable.csv  -N 1 -X 750000
 
-# python3 /captools/ewalsh/Retrogenix/FastqProcess/main.py fastqQC -s CHO_1_GSE138292 
+# python3 /home/ewalsh/FastqProcess/main.py fastqQC -s CHO_1_GSE138292 
 
-# python3 /captools/ewalsh/Retrogenix/FastqProcess/main.py mkref -s CHO_1_GSE138292 \
-# -rf /ds-workspace/EW-TempDataStore/genomes/CHO_1_GSE138292/GCF_000223135.1_CriGri_1.0_genomic.fna.gz \
-# -rg /ds-workspace/EW-TempDataStore/genomes/CHO_1_GSE138292/GCF_000223135.1_CriGri_1.0_genomic.gtf.gz \
+# python3 /home/ewalsh/FastqProcess/main.py mkref -s CHO_1_GSE138292 \
 # -species Cricetulus_griseus \
 # -star_args '{"--limitGenomeGenerateRAM": 90000000000}' 
 
-# python3 /captools/ewalsh/Retrogenix/FastqProcess/main.py STAR -s CHO_1_GSE138292 
+# python3 /home/ewalsh/FastqProcess/main.py STAR -s CHO_1_GSE138292 
 
-# python3 /captools/ewalsh/Retrogenix/FastqProcess/main.py htseq -s CHO_1_GSE138292 
+# python3 /home/ewalsh/FastqProcess/main.py htseq -s CHO_1_GSE138292 
 
-# python3 /captools/ewalsh/Retrogenix/FastqProcess/main.py DownstreamAnalysis -s CHO_1_GSE138292 \
+# python3 /home/ewalsh/FastqProcess/main.py DownstreamAnalysis -s CHO_1_GSE138292 \
 # -df BioProject treatment \
 # -c treatment insulin control \
-# -m /captools/ewalsh/Retrogenix/FastqProcess/RunFiles/hCMEC_GSE195781/SraRunTable.csv 
+# -m /home/ewalsh/FastqProcess/RunFiles/hCMEC_GSE195781/SraRunTable.csv 
 
-# python3 /captools/ewalsh/Retrogenix/FastqProcess/main.py Normalize -s CHO_1_GSE138292 
+# python3 /home/ewalsh/FastqProcess/main.py Normalize -s CHO_1_GSE138292 

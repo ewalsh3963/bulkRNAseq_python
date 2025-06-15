@@ -1,9 +1,6 @@
 #/usr/bin/python3
-# Last Update: 
-# Capsida Biotherapeutics
 # Data Science 
-# Evan Walsh (evan.walsh@capsida.com)
-# borrowed from /captools/captools-AWS/PyCaptools.py
+# Evan Walsh (evanwalsh396@gmail.com)
 
 import os
 import sys

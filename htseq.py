@@ -2,7 +2,7 @@
 # Last Update: 
 # Capsida Biotherapeutics
 # Data Science 
-# Evan Walsh (evan.walsh@capsida.com)
+# Evan Walsh (evanwalsh396@gmail.com)
 
 import os
 import sys

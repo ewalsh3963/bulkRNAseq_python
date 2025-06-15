@@ -2,8 +2,7 @@
 # Last Update: 
 # Capsida Biotherapeutics
 # Data Science 
-# Evan Walsh (evan.walsh@capsida.com)
-# borrowed from /captools/captools-AWS/PyCaptools.py
+# Evan Walsh (evanwalsh396@gmail.com)
 
 import os
 import sys
@@ -19,13 +18,7 @@ import subprocess
 import re
 import csv
 from threading import Thread, Semaphore
-
-
-# Save the current working directory
-import sys
-gen_tools_dir = "/captools/ewalsh/Retrogenix"  # Define the directory where GEN_Tools.py is located
-sys.path.insert(0, gen_tools_dir)
-import GEN_Tools
+import OS_Tools
 
 def runSTAR(fq, output_dir, genome_dir, star_args):
     
@@ -155,7 +148,7 @@ def main(args, run_logs):
 if __name__ == "__main__":
     main()
 
-#   nohup /usr/bin/STAR --genomeDir /ds-workspace/EW-TempDataStore/genomes/${study}_TargetGene/STAR_index \
+#   nohup /usr/bin/STAR --genomeDir /home/ewalsh/scratch/genomes/${study}_TargetGene/STAR_index \
 #   --runThreadN 16 --readFilesIn ${fq} \
 #   --outFileNamePrefix ${sublib} \
 #   --outSAMtype BAM SortedByCoordinate \

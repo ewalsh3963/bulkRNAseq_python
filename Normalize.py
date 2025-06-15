@@ -2,8 +2,7 @@
 # Last Update: 
 # Capsida Biotherapeutics
 # Data Science 
-# Evan Walsh (evan.walsh@capsida.com)
-# borrowed from /captools/captools-AWS/PyCaptools.py
+# Evan Walsh (evanwalsh396@gmail.com)
 
 import os
 import sys
@@ -23,18 +22,7 @@ from gtfparse import read_gtf
 import io
 from pybiomart import Server
 import polars as pl
-
-import sys
-gen_tools_dir = "/captools/ewalsh/BINF_Tools/GTFTools/GTFtools_0.9.0"  # Define the directory where gtftools.py is located
-sys.path.insert(0, gen_tools_dir)
-# import gtftools
-
-# Save the current working directory
-import sys
-gen_tools_dir = "/captools/ewalsh/Retrogenix"  # Define the directory where GEN_Tools.py is located
-sys.path.insert(0, gen_tools_dir)
-import GEN_Tools
-
+import OS_Tools
 
 
 class RNASeqNormalizer:

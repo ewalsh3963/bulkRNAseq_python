@@ -1,9 +1,6 @@
 #/usr/bin/python3
-# Last Update: 
-# Capsida Biotherapeutics
 # Data Science 
-# Evan Walsh (evan.walsh@capsida.com)
-# borrowed from /captools/captools-AWS/PyCaptools.py
+# Evan Walsh (evanwalsh396@gmail.com)
 
 import os
 import sys
@@ -16,14 +13,7 @@ from matplotlib import pyplot as plt
 import pdb
 import re
 import csv
-
-# Save the current working directory
-import sys
-gen_tools_dir = "/captools/ewalsh/Retrogenix"  # Define the directory where GEN_Tools.py is located
-sys.path.insert(0, gen_tools_dir)
-import GEN_Tools
-
-# sys.path.append('/captools/SANDPIPER/Controllers')  # add associated programs to path
+import OS_Tools
 
 class refController:
     """ Class that handles all downloading and creating of reference files onto EC2 VM. """
@@ -34,7 +24,7 @@ class refController:
         self.ref_fasta = ref_fasta
         self.ref_gtf = ref_gtf
 
-    def get_ref_files(self, data_loc='/ds-workspace/EW-TempDataStore', ftp_root="https://ftp.ensembl.org/pub/"):
+    def get_ref_files(self, data_loc='/home/ewalsh/scratch', ftp_root="https://ftp.ensembl.org/pub/"):
         ## get the path to the species reference files from NCBI ftp site
         targetDir = os.path.join(self.out, self.species)
         GEN_Tools.SearchDir.remove_dir(targetDir)
@@ -129,9 +119,9 @@ if __name__ == "__main__":
 
 
 # /usr/bin/STAR --runMode genomeGenerate \
-# --genomeDir /ds-workspace/EW-TempDataStore/genomes/PDEV-4033_TargetGene/STAR_index \
-# --genomeFastaFiles /ds-workspace/EW-TempDataStore/genomes/PDEV-4033_TargetGene/targetGene.fa \
-# --sjdbGTFfile /ds-workspace/EW-TempDataStore/genomes/PDEV-4033_TargetGene/targetGene.gtf \
+# --genomeDir /home/ewalsh/scratch/genomes/PDEV-4033_TargetGene/STAR_index \
+# --genomeFastaFiles /home/ewalsh/scratch/genomes/PDEV-4033_TargetGene/targetGene.fa \
+# --sjdbGTFfile /home/ewalsh/scratch/genomes/PDEV-4033_TargetGene/targetGene.gtf \
 # --sjdbOverhang 50 \
 # --runThreadN 4 \
 # --genomeSAindexNbases 6
