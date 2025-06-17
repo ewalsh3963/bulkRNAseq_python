@@ -1,6 +1,5 @@
 #/usr/bin/python3
 # Last Update: 
-# Capsida Biotherapeutics
 # Data Science 
 # Evan Walsh (evanwalsh396@gmail.com)
 

@@ -1,5 +1,4 @@
 # !/bin/python3
-# Capsida Biotherapeutics
 # Download fastq files from Gene Expression Omnibus and perform RNA-seq analysis
 # QBDS
 # Evan Walsh (evanwalsh396@gmail.com)
